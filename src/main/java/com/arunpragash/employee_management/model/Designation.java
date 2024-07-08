@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Designation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private String name;
+    private Integer Department;
 
     // other attributes if necessary
 }

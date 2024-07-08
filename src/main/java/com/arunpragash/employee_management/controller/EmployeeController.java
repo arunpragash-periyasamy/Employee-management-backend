@@ -1,8 +1,11 @@
 package com.arunpragash.employee_management.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,22 +20,26 @@ import com.arunpragash.employee_management.service.EmployeeService;
 
 @RestController
 @RequestMapping("/api/employee")
+@CrossOrigin("*")
 public class EmployeeController {
     @Autowired
     private EmployeeService service;
+
     @GetMapping
-    public String home() {
-        return "Welcome to the employee management system";
+    public List<Employee> getEmployees() {
+        return service.getAllEmployees();
     }
 
-    @PostMapping("")
+    @PostMapping
     public boolean addEmployee(@RequestBody Employee employee) {
-        return service.addOrUpdateEmployee(employee);
+        return service.addEmployee(employee);
     }
 
-    @PutMapping
-    public boolean updateEmployee(@RequestBody Employee employee) {
-        return service.addOrUpdateEmployee(employee);
+    
+
+    @PutMapping("{id}")
+    public boolean updateEmployee(@RequestBody Employee employee, @PathVariable long id) {
+        return service.updateEmployee(employee);
     }
 
     @DeleteMapping("{employeeId}")
@@ -45,9 +52,20 @@ public class EmployeeController {
         return service.getEmployee(employeeId);
     }
 
-    @GetMapping("/employees")
+  
 
-    public List<Employee> getEmployees() {
-        return service.getAllEmployees();
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Map<String, String> loginDetails) {
+        String empId = loginDetails.get("empId");
+        String password = loginDetails.get("password");
+
+        boolean loginSuccessful = service.login(empId, password);
+
+        if (loginSuccessful) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.badRequest().body("Login failed");
+        }
     }
+
 }

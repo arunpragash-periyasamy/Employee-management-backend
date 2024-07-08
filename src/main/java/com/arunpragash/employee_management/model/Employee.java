@@ -21,16 +21,16 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String firstName;
-    private String lastName;
+    private String empId;
+    private String name;
     private String email;
     private String gender;
     private long mobileNumber;
     private String password;
-    private String confirmPassword;
     private String designation;
     private String department;
     private String address;
     private String education;
     private Date dateOfBirth;
+    
 }
